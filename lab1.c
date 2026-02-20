@@ -97,8 +97,19 @@ void tree_print(Tree *tree, int space_increment) {
     _tree_print_recursive(tree->root, 0, space_increment);
 };
 
-void tree_peaks(Tree *tree) {
+int _tree_peaks_recursive(Node *node) {
+    if (node->children_count == 0) {
+        return 1;
+    };
+    int count = 0;
+    for (int i = 0; i < node->children_count; i++) {
+        count += _tree_peaks_recursive(node->children[i]);
+    };
+    return count;
+};
 
+int tree_peaks(Tree *tree) {
+    return _tree_peaks_recursive(tree->root);
 };
 
 
@@ -141,6 +152,11 @@ void prepare_tree_print(Tree *tree) {
     tree_print(tree, space_increment);
 };
 
+void prepare_tree_peaks(Tree *tree) {
+    int peaks = tree_peaks(tree);
+    printf("Peaks: %d\n", peaks);
+};
+
 int main() {
     Tree tree;
 
@@ -171,6 +187,7 @@ int main() {
                 prepare_tree_print(&tree);
                 break;
             case '4':
+                prepare_tree_peaks(&tree);
                 break;
             default:
                 break;
