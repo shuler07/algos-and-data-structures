@@ -157,6 +157,11 @@ void prepare_tree_peaks(Tree *tree) {
     printf("Peaks: %d\n", peaks);
 };
 
+void warning_message(char cmd) {
+    printf("Unknown command: %c\n", cmd);
+    printf("Allowed commands: 0, 1, 2, 3, 4\n");
+};
+
 int main() {
     Tree tree;
 
@@ -190,6 +195,7 @@ int main() {
                 prepare_tree_peaks(&tree);
                 break;
             default:
+                warning_message(choice);
                 break;
         };
     };
