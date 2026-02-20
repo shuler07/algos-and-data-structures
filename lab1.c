@@ -25,7 +25,6 @@ void tree_init(Tree *tree, int value) {
     node->children_count = 0;
     node->value = value;
     tree->root = node;
-    return;
 };
 
 bool _tree_add_recursive(Node *node, int parent, int value) {
@@ -51,8 +50,37 @@ bool tree_add(Tree *tree, int parent, int value) {
     return _tree_add_recursive(tree->root, parent, value);
 };
 
-void tree_remove(Tree *tree, int value) {
+bool _tree_remove_recursive(Node *node, int value, bool is_found) {
+    if (node->value == value) {
+        is_found = true;
+    };
+    for (int i = 0; i < node->children_count; i++) {
+        bool result = _tree_remove_recursive(node->children[i], value, is_found);
+        if (!is_found && result) {
+            return true;  // если текущая вершина - число, которое нужно удалить,
+                          // то надо пройти по всем потомкам, если нет - то достаточно найти нужное число у 1 потомка
+        };
+    };
+    if (is_found) {
+        Node *parent = node->parent;
+        bool is_child_found = false;
+        for (int i = 0; i < parent->children_count - 1; i++) {
+            if (parent->children[i] == node) {
+                is_child_found = true;
+            };
+            if (is_child_found) {
+                parent->children[i] = parent->children[i+1];
+            };
+        };
+        parent->children_count--;
+        free(node);
+        return true;
+    };
+    return false;
+};
 
+bool tree_remove(Tree *tree, int value) {
+    return _tree_remove_recursive(tree->root, value, false);
 };
 
 void _tree_print_recursive(Node *node, int space, int space_increment) {
@@ -63,7 +91,6 @@ void _tree_print_recursive(Node *node, int space, int space_increment) {
     for (int i = 0; i < node->children_count; i++) {
         _tree_print_recursive(node->children[i], space + space_increment, space_increment);
     };
-    return;
 };
 
 void tree_print(Tree *tree, int space_increment) {
@@ -85,7 +112,33 @@ void show_menu_message() {
     printf("4. Count tree peaks\n");
     printf("==============================\n");
     printf("Select option: ");
-    return;
+};
+
+void prepare_tree_add_elem(Tree *tree) {
+    int parent, value;
+    printf("Parent: ");
+    scanf(" %d", &parent);
+    printf("Value: ");
+    scanf(" %d", &value);
+    if (tree_add(tree, parent, value)) {
+        printf("Added successfully\n");
+    };
+};
+
+void prepare_tree_remove_elem(Tree *tree) {
+    int value;
+    printf("Value: ");
+    scanf(" %d", &value);
+    if (tree_remove(tree, value)) {
+        printf("Removed successfully\n");
+    };
+}
+
+void prepare_tree_print(Tree *tree) {
+    int space_increment;
+    printf("Space increment: ");
+    scanf(" %d", &space_increment);
+    tree_print(tree, space_increment);
 };
 
 int main() {
@@ -109,22 +162,13 @@ int main() {
                 is_program_working = false;
                 break;
             case '1':
-                int parent, value;
-                printf("Parent: ");
-                scanf(" %d", &parent);
-                printf("Value: ");
-                scanf(" %d", &value);
-                if (tree_add(&tree, parent, value)) {
-                    printf("Added successfully\n");
-                };
+                prepare_tree_add_elem(&tree);
                 break;
             case '2':
+                prepare_tree_remove_elem(&tree);
                 break;
             case '3':
-                int space_increment;
-                printf("Space increment: ");
-                scanf(" %d", &space_increment);
-                tree_print(&tree, space_increment);
+                prepare_tree_print(&tree);
                 break;
             case '4':
                 break;
