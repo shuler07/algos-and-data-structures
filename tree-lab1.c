@@ -59,8 +59,8 @@ bool _tree_remove_recursive(Node *node, int value, bool is_found) {
                           // то надо пройти по всем потомкам, если нет - то достаточно найти нужное число у 1 потомка
         };
     };
-    if (is_found) {
-        Node *parent = node->parent;
+    Node *parent = node->parent;
+    if (is_found && parent) {
         bool is_child_found = false;
         for (int i = 0; i < parent->children_count - 1; i++) {
             if (parent->children[i] == node) {
@@ -78,6 +78,15 @@ bool _tree_remove_recursive(Node *node, int value, bool is_found) {
 };
 
 bool tree_remove(Tree *tree, int value) {
+    if (!tree->root) {
+        return false;
+    };
+    if (tree->root->value == value) {
+        _tree_remove_recursive(tree->root, value, false);
+        tree->root = NULL;
+        return true;
+    };
+
     return _tree_remove_recursive(tree->root, value, false);
 };
 
