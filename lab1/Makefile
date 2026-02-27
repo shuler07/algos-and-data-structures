@@ -1,10 +1,11 @@
-all: build-tests build
+all: run-tests build
 
 
 
-build-tests: tree-lab1.o test-lab1.o
+run-tests: tree-lab1.o test-lab1.o
 	g++ test-lab1.o tree-lab1.o -o test-lab1.exe
 	@echo "lab1 tests builded"
+ ./test-lab1.exe
 
 build: tree-lab1.o lab1.o
 	g++ lab1.o tree-lab1.o -o lab1.exe
