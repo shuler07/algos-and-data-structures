@@ -116,5 +116,9 @@ int _tree_peaks_recursive(Node *node) {
 };
 
 int tree_peaks(Tree *tree) {
+    if (!tree->root) {
+        return 0;
+    };
+
     return _tree_peaks_recursive(tree->root);
 };
