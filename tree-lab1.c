@@ -4,18 +4,18 @@
 #include "lab1.h"
 
 
-void tree_init(Tree *tree, int value) {
-    Node *node = (Node*)malloc(sizeof(Node));
-    node->parent = NULL;
-    node->children_count = 0;
-    node->value = value;
-    tree->root = node;
+void tree_init(Tree *tree) {
+    tree->root = NULL;
 };
 
 bool _tree_add_recursive(Node *node, int parent, int value) {
     if (node->value == parent) {
         if (node->children_count != TREE_MAX_CHILDRENS) {
             Node *new_node = (Node*)malloc(sizeof(Node));
+            if (!new_node) {
+                printf("Memory error");
+                return false;
+            };
             new_node->parent = node;
             new_node->value = value;
             node->children[node->children_count] = new_node;
@@ -32,6 +32,19 @@ bool _tree_add_recursive(Node *node, int parent, int value) {
 };
 
 bool tree_add(Tree *tree, int parent, int value) {
+    if (!tree->root) {
+        Node *new_node = (Node*)malloc(sizeof(Node));
+        if (!new_node) {
+            printf("Memory error");
+            return false;
+        };
+        new_node->parent = NULL;
+        new_node->value = value;
+        new_node->children_count = 0;
+        tree->root = new_node;
+        return true;
+    };
+
     return _tree_add_recursive(tree->root, parent, value);
 };
 

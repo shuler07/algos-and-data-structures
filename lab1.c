@@ -17,7 +17,7 @@ void show_menu_message() {
 
 void prepare_tree_add_elem(Tree *tree) {
     int parent, value;
-    printf("Parent: ");
+    printf("Parent (If tree is degenerate - parent will be ignored): ");
     scanf(" %d", &parent);
     printf("Value: ");
     scanf(" %d", &value);
@@ -54,11 +54,7 @@ void warning_message(char cmd) {
 
 int main() {
     Tree tree;
-
-    printf("Root value: ");
-    int root_value;
-    scanf(" %d", &root_value);
-    tree_init(&tree, root_value);
+    tree_init(&tree);
 
     bool is_program_working = true;
     while (is_program_working) {

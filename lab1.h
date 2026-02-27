@@ -18,7 +18,7 @@ typedef struct {
     Node *root;
 } Tree;
 
-void tree_init(Tree* tree, int value);
+void tree_init(Tree* tree);
 bool tree_add(Tree *tree, int parent, int value);
 bool tree_remove(Tree *tree, int value);
 void tree_print(Tree *tree, int space_increment);
