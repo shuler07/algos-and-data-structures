@@ -21,18 +21,16 @@ void prepare_tree_add_elem(Tree *tree) {
     scanf(" %d", &parent);
     printf("Value: ");
     scanf(" %d", &value);
-    if (tree_add(tree, parent, value)) {
-        printf("Added successfully\n");
-    };
+    if (tree_add(tree, parent, value)) printf("Added successfully\n");
+    else printf("Element not added\n");
 };
 
 void prepare_tree_remove_elem(Tree *tree) {
     int value;
     printf("Value: ");
     scanf(" %d", &value);
-    if (tree_remove(tree, value)) {
-        printf("Removed successfully\n");
-    };
+    if (tree_remove(tree, value)) printf("Removed successfully\n");
+    else printf("Element not found\n");
 }
 
 void prepare_tree_print(Tree *tree) {
