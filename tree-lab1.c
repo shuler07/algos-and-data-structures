@@ -101,6 +101,10 @@ void _tree_print_recursive(Node *node, int space, int space_increment) {
 };
 
 void tree_print(Tree *tree, int space_increment) {
+    if (!tree->root) {
+        return;
+    };
+
     _tree_print_recursive(tree->root, 0, space_increment);
 };
 
