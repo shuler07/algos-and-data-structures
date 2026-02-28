@@ -15,7 +15,7 @@ bool test_tree_count_peaks(Tree *tree) {
         tree_add(tree, 2, 6);
 
         peaks = tree_peaks(tree);
-        if (peaks == 4) {
+        if (peaks == 6) {
             printf("Peaks counted correct\n");
             return true;
         };

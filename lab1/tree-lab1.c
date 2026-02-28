@@ -109,10 +109,7 @@ void tree_print(Tree *tree, int space_increment) {
 };
 
 int _tree_peaks_recursive(Node *node) {
-    if (node->children_count == 0) {
-        return 1;
-    };
-    int count = 0;
+    int count = 1;
     for (int i = 0; i < node->children_count; i++) {
         count += _tree_peaks_recursive(node->children[i]);
     };
