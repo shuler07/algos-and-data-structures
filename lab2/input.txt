@@ -1,0 +1,21 @@
+10
+3 apple
+something
+5 house
+donot
+4 mouse
+read
+1 reality
+this
+9 king
+text
+8 exercise
+word
+6 heart
+word2
+5 lie
+it is sentence
+2 ping
+it is sentence too
+3 fight
+itisnotsentence
