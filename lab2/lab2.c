@@ -4,7 +4,7 @@
 const int MAX_TABLE_LEN = 100;
 
 int main() {
-    char *input_filepath = "./input.txt";
+    char input_filepath[20] = "./input.txt";
 
     int lines = 100;
     TableData *raw_table = (TableData*)calloc(MAX_TABLE_LEN, sizeof(TableData));
@@ -27,7 +27,7 @@ int main() {
         printf("%d. %d-%s: %s\n", i, table[i].number, table[i].string, table[i].value);
     };
 
-    char *output_filepath = "./output.txt";
+    char output_filepath[20] = "./output.txt";
     write_table(table, lines, output_filepath);
 
     return 0;
