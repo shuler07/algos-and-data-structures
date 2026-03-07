@@ -1,15 +1,16 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 #include "lab2.h"
 
-void read_table(TableData table[], int table_limit, char *filepath, int *lines) {
+bool read_table(TableData table[], int table_limit, char *filepath, int *lines) {
     FILE *input_table;
     input_table = fopen(filepath, "r");
 
     if (!input_table) {
         printf("Error when reading file: %s\n", filepath);
-        return;
+        return false;
     };
 
     int n;
@@ -19,7 +20,7 @@ void read_table(TableData table[], int table_limit, char *filepath, int *lines) 
     if (n > table_limit) {
         printf("Table bigger than expected");
         fclose(input_table);
-        return;
+        return false;
     };
 
     for (int i = 0; i < n; i++) {
@@ -30,15 +31,16 @@ void read_table(TableData table[], int table_limit, char *filepath, int *lines) 
     };
 
     fclose(input_table);
+    return true;
 };
 
-void write_table(TableData table[], int n, char *filepath) {
+bool write_table(TableData table[], int n, char *filepath) {
     FILE *output_table;
     output_table = fopen(filepath, "w");
 
     if (!output_table) {
         printf("Error when writing file: %s\n", filepath);
-        return;
+        return false;
     };
 
     char n_str[10];
@@ -56,4 +58,15 @@ void write_table(TableData table[], int n, char *filepath) {
     };
 
     fclose(output_table);
+    return true;
+};
+
+void search_table(TableData table[], int key1, char key2[128], int lines) {
+    for (int i = 0; i < lines; i++) {
+        if (table[i].number == key1 && strcmp(table[i].string, key2) == 0) {
+            printf("%d. %s\n", i, table[i].value);
+            return;
+        };
+    };
+    printf("Key not found\n");
 };
