@@ -1,4 +1,6 @@
-10
+18
+1 pain
+blablabla
 1 reality
 this
 2 ping
@@ -19,3 +21,17 @@ word2
 word
 9 king
 text
+14 word
+clone
+16 921stop
+bell
+18 justice
+sad sad sad
+23 people
+fine
+52 keyboard
+moscow city
+67 milk
+oatmeal
+99 home
+law

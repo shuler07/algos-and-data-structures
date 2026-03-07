@@ -1,4 +1,4 @@
-10
+18
 3 apple
 something
 5 house
@@ -19,3 +19,19 @@ it is sentence
 it is sentence too
 3 fight
 itisnotsentence
+23 people
+fine
+1 pain
+blablabla
+16 921stop
+bell
+14 word
+clone
+18 justice
+sad sad sad
+67 milk
+oatmeal
+52 keyboard
+moscow city
+99 home
+law
