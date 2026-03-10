@@ -34,7 +34,9 @@ void try_search_table(TableData table[], int lines) {
     char key2[128];
     printf("Key in format <number string>: ");
     scanf("%d %s", &key1, key2);
-    search_table(table, key1, key2, lines);
+    int index = search_table(table, key1, key2, lines);
+    if (index == -1) printf("Key not found\n");
+    else printf("Index: %d\n", index);
 };
 
 void try_save_table(TableData table[], int lines) {

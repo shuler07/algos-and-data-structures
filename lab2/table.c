@@ -49,10 +49,10 @@ bool write_table(TableData table[], int n, char *filepath) {
     fputs(n_str, output_table);
 
     for (int i = 0; i < n; i++) {
-        char key_str[MAX_KEY_LEN + 12];
+        char key_str[140];
         sprintf(key_str, "%d %s\n", table[i].number, table[i].string);
         fputs(key_str, output_table);
-        char value_str[MAX_VALUE_LEN + 1];
+        char value_str[129];
         sprintf(value_str, "%s\n", table[i].value);
         fputs(value_str, output_table);
     };
@@ -61,12 +61,11 @@ bool write_table(TableData table[], int n, char *filepath) {
     return true;
 };
 
-void search_table(TableData table[], int key1, char key2[128], int lines) {
+int search_table(TableData table[], int key1, char key2[128], int lines) {
     for (int i = 0; i < lines; i++) {
         if (table[i].number == key1 && strcmp(table[i].string, key2) == 0) {
-            printf("%d. %s\n", i, table[i].value);
-            return;
+            return i;
         };
     };
-    printf("Key not found\n");
+    return -1;
 };
