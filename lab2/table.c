@@ -4,6 +4,27 @@
 #include <stdbool.h>
 #include "lab2.h"
 
+char *readline(FILE *file) {
+    int i = 0, buf_size = 8;
+    char *buf = (char*)malloc(buf_size);
+    char ch;
+    while ((ch = fgetc(file)) != '\n' && ch != '\r' && ch != EOF) {
+        buf[i++] = ch;
+        if (i == buf_size - 1) {
+            buf_size *= 2;
+            char *new_buf = (char*)realloc(buf, buf_size);
+            if (!new_buf) {
+                free(buf);
+                return NULL;
+            };
+            buf = new_buf;
+        };
+    };
+    if (ch == '\r') fgetc(file);
+    buf[i] = '\0';
+    return buf;
+};
+
 bool read_table(TableData table[], int table_limit, char *filepath, int *lines) {
     FILE *input_table;
     input_table = fopen(filepath, "r");
@@ -24,10 +45,13 @@ bool read_table(TableData table[], int table_limit, char *filepath, int *lines) 
     };
 
     for (int i = 0; i < n; i++) {
-        if (fscanf(input_table, "%d %s ", &table[i].number, table[i].string) == 2) {
-            fgets(table[i].value, sizeof(table[i].value), input_table);
-            table[i].value[strcspn(table[i].value, "\n\r")] = '\0';
-        };
+        fscanf(input_table, "%d ", &table[i].number);
+        char *key_string = readline(input_table);
+        if (!key_string) printf("WARNING: memory allocation error on %d line\n", (i + 1) * 2);
+        table[i].string = key_string;
+        char *value_string = readline(input_table);
+        if (!value_string) printf("WARNING: memory allocation error on %d line\n", (i + 1) * 2 + 1);
+        table[i].value = value_string;
     };
 
     fclose(input_table);
@@ -43,25 +67,21 @@ bool write_table(TableData table[], int n, char *filepath) {
         return false;
     };
 
-    char n_str[10];
+    char n_str[16];
     sprintf(n_str, "%d\n", n);
 
     fputs(n_str, output_table);
 
     for (int i = 0; i < n; i++) {
-        char key_str[140];
-        sprintf(key_str, "%d %s\n", table[i].number, table[i].string);
-        fputs(key_str, output_table);
-        char value_str[129];
-        sprintf(value_str, "%s\n", table[i].value);
-        fputs(value_str, output_table);
+        fprintf(output_table, "%d %s\n", table[i].number, table[i].string);
+        fprintf(output_table, "%s\n", table[i].value);
     };
 
     fclose(output_table);
     return true;
 };
 
-int search_table(TableData table[], int key1, char key2[128], int lines) {
+int search_table(TableData table[], int key1, char *key2, int lines) {
     for (int i = 0; i < lines; i++) {
         if (table[i].number == key1 && strcmp(table[i].string, key2) == 0) {
             return i;

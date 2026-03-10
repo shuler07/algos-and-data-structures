@@ -5,12 +5,14 @@
 #include <assert.h>
 #include "lab2.h"
 
-void random_key_string(char buffer[]) {
+char* random_key_string() {
     int letters = rand() % 50 + 5;
+    char *buffer = (char*)malloc(letters + 1);
     for (int i = 0; i < letters; i++) {
         buffer[i] = (char)(rand() % 26 + 97);
     };
     buffer[letters] = '\0';
+    return buffer;
 };
 
 void test_table_sort(TableData table[], int n) {
@@ -31,8 +33,8 @@ void test_table_io() {
         TableData *test_table = (TableData*)calloc(size, sizeof(TableData));
         for (int i = 0; i < size; i++) {
             test_table[i].number = rand();
-            random_key_string(test_table[i].string);
-            random_key_string(test_table[i].value);
+            test_table[i].string = random_key_string();
+            test_table[i].value = random_key_string();
         };
         printf("table filled\n");
 
@@ -42,7 +44,7 @@ void test_table_io() {
         
         TableData *check_table = (TableData*)calloc(size, sizeof(TableData));
         read_table(check_table, size, table_filename, &size);
-        printf("table read");
+        printf("table read\n");
 
         for (int i = 0; i < size; i++) {
             assert(test_table[i].number == check_table[i].number);
