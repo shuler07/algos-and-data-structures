@@ -10,7 +10,7 @@ void stack_create(Stack *st) {
 void stack_push(Stack *st, char oper) {
     StackNode *node = (StackNode*)malloc(sizeof(StackNode));
     if (!node) {
-        printf("Memory allocation error\n");
+        printf("<< Memory allocation error! >>\n");
         return;
     };
 

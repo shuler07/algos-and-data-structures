@@ -7,7 +7,7 @@ char *get_expr_string(int *expr_size) {
     int buf_size = 16, ind = 0;
     char *buf = (char*)malloc(buf_size);
     if (!buf) {
-        printf("Memory allocation error\n");
+        printf("<< Memory allocation error! >>\n");
         return NULL;
     };
     char ch;
@@ -23,7 +23,7 @@ char *get_expr_string(int *expr_size) {
             buf_size *= 2;
             char *new_buf = (char*)realloc(buf, buf_size);
             if (!new_buf) {
-                printf("Memory allocation error\n");
+                printf("<< Memory allocation error! >>\n");
                 return NULL;
             };
             buf = new_buf;

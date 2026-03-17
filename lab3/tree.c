@@ -17,7 +17,7 @@ bool tree_add_rec(TreeNode *node, char val) {
     if (!node->right) {
         TreeNode *new_node = (TreeNode*)malloc(sizeof(TreeNode));
         if (!new_node) {
-            printf("Memory allocation error\n");
+            printf("<< Memory allocation error! >>\n");
             return false;
         };
         new_node->val = val;
@@ -37,7 +37,7 @@ bool tree_add_rec(TreeNode *node, char val) {
     if (!node->left) {
         TreeNode *new_node = (TreeNode*)malloc(sizeof(TreeNode));
         if (!new_node) {
-            printf("Memory allocation error\n");
+            printf("<< Memory allocation error! >>\n");
             return false;
         };
         new_node->val = val;
@@ -57,7 +57,7 @@ void tree_add(Tree *tr, char val) {
     if (!tr->root) {
         TreeNode *node = (TreeNode*)malloc(sizeof(TreeNode));
         if (!node) {
-            printf("Memory allocation error\n");
+            printf("<< Memory allocation error! >>\n");
             return;
         };
         node->val = val;
@@ -65,10 +65,11 @@ void tree_add(Tree *tr, char val) {
         tr->root = node;
         return;
     };
-    if (!tree_add_rec(tr->root, val)) printf("Tree adding error\n");
+    if (!tree_add_rec(tr->root, val)) printf("<< Tree adding error! >>\n");
 };
 
 void tree_print(TreeNode *node, int space) {
+    if (!space) printf(" => Tree expression:\n");
     for (int i = 0; i < space; i++) printf(" ");
     printf("%c\n", node->val);
     if (node->left) tree_print(node->left, space + 2);
