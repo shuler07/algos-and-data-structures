@@ -29,10 +29,18 @@ char *get_postfix_expr(char *expr, int expr_size) {
     Stack opers;
     stack_create(&opers);
 
+    char num[16];
+    int num_ind = 0;
+
     int i = -1;
     while (expr[++i] != '\0') {
         char ch = expr[i];
         if (!is_oper(ch)) {
+            if (num_ind != 0 && '0' <= ch && ch <= '9'); // raise error
+            if ('0' <= ch <= '9') {
+                num[num_ind++] = ch;
+                continue;
+            };
             res[ind++] = ch;
             continue;
         };
@@ -43,6 +51,15 @@ char *get_postfix_expr(char *expr, int expr_size) {
         if (ch == '(') stack_push(&opers, ch);
         else if (ch == ')') while ((ch = stack_pop(&opers)) != '(') res[ind++] = ch;
         else {
+            if (num_ind != 0) {
+                res[ind++] = '(';
+                num[num_ind] = '\0';
+                strcat(res, num);
+                ind += num_ind;
+                res[ind++] = ')';
+                num[0] = '\0';
+                num_ind = 0;
+            };
             while (opers.top && opers.top->priority >= priority(ch)) res[ind++] = stack_pop(&opers);
             stack_push(&opers, ch);
         };
