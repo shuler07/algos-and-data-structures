@@ -1,16 +1,19 @@
 all: run-tests build
 
-run-tests: lab3.h stack.o tree.o deykstra.o convert.o test_lab3.o
-	gcc stack.o tree.o deykstra.o convert.o test_lab3.o -o test_lab3.exe
+run-tests: lab3.h list.o stack.o tree.o deykstra.o convert.o test_lab3.o
+	gcc list.o stack.o tree.o deykstra.o convert.o test_lab3.o -o test_lab3.exe
 	@echo "Running tests"
 	./test_lab3.exe
 
-build: lab3.h get_string.o stack.o tree.o deykstra.o convert.o lab3.o
-	gcc get_string.o stack.o tree.o deykstra.o convert.o lab3.o -o lab3.exe
+build: lab3.h get_string.o list.o stack.o tree.o deykstra.o convert.o lab3.o
+	gcc get_string.o list.o stack.o tree.o deykstra.o convert.o lab3.o -o lab3.exe
 	@echo "lab3 builded"
 
 get_string.o: lab3.h get_string.c
 	gcc -c get_string.c
+
+list.o: lab3.h list.c
+	gcc -c list.c
 
 stack.o: lab3.h stack.c
 	gcc -c stack.c
