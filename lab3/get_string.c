@@ -3,7 +3,7 @@
 #include "lab3.h"
 
 
-char *get_string(int *expr_size) {
+char *get_expr_string(int *expr_size) {
     int buf_size = 16, ind = 0;
     char *buf = (char*)malloc(buf_size);
     if (!buf) {
@@ -14,6 +14,10 @@ char *get_string(int *expr_size) {
     scanf("%c", &ch);
 
     while (ch != '\n' && ch != '\r') {
+        if (ch == ' ') {
+            scanf("%c", &ch);
+            continue;
+        };
         buf[ind++] = ch;
         if (ind + 1 == buf_size) {
             buf_size *= 2;

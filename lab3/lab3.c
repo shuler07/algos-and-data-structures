@@ -26,7 +26,7 @@ int main() {
 
     while (1) {
         printf("(0 - Exit program)\nType expression: ");
-        expr = get_string(&expr_size);
+        expr = get_expr_string(&expr_size);
         if (expr[0] == '0' && expr[1] == '\0') return 0;
         if (expr[0] == '\0') continue;
         process_expr(expr, expr_size);

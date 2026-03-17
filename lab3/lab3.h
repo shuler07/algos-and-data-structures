@@ -2,7 +2,7 @@
 #define lab3_h
 
 // get_string.c
-char *get_string(int *expr_size);
+char *get_expr_string(int *expr_size);
 
 // stack.c
 typedef struct StackNode {
