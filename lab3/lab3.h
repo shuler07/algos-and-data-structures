@@ -4,6 +4,24 @@
 // get_string.c
 char *get_expr_string(int *expr_size);
 
+// list.c
+typedef struct ListNode {
+    char *token;
+    struct ListNode *prev;
+    struct ListNode *next;
+} ListNode;
+
+typedef struct List {
+    ListNode *first;
+    ListNode *last;
+} List;
+
+void list_create(List *lst);
+void list_push_begin(List *lst, char *token);
+void list_push_end(List *lst, char *token);
+char *list_pop_begin(List *lst);
+char *list_pop_end(List *lst);
+
 // stack.c
 typedef struct StackNode {
     char oper;
