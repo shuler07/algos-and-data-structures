@@ -22,13 +22,13 @@ int main() {
     Tree expr_tree;
     tree_create(&expr_tree);
 
+    char choice;
     while (true) {
-        int choice;
         show_system_message(is_expr_entered);
-        scanf("%d ", &choice);
+        scanf("%c", &choice);
         switch (choice) {
-            case 0: return 0;
-            case 1:
+            case '0': return 0;
+            case '1':
                 printf(" => Type expression: ");
                 expr = get_expr_string(&expr_size);
                 if (expr[0] == '\0') printf("<< Empty expression! >>\n");
@@ -38,19 +38,19 @@ int main() {
                     postfix_expr_to_tree(postfix_expr, &expr_tree);
                 };
                 break;
-            case 2:
+            case '2':
                 if (!is_expr_entered) printf("<< Enter expression first! >>\n");
                 else printf(" => Expression: %s\n", expr);
                 break;
-            case 3:
+            case '3':
                 if (!is_expr_entered) printf("<< Enter expression first! >>\n");
                 else printf(" => Postfix expression: %s\n", postfix_expr);
                 break;
-            case 4:
+            case '4':
                 if (!is_expr_entered) printf("<< Enter expression first! >>\n");
                 else tree_print(expr_tree.root, 0);
                 break;
-            case 5:
+            case '5':
                 if (!is_expr_entered) printf("<< Enter expression first! >>\n");
                 else {
                     tree_remove_unary_minuses(&expr_tree, expr_tree.root);
@@ -58,6 +58,8 @@ int main() {
                     postfix_expr = get_postfix_expr(expr, expr_size);
                 };
                 break;
+            default:
+                printf("<< Unknown command! >>\n");
             };
     };
 
