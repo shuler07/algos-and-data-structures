@@ -25,6 +25,7 @@ int priority(char oper) {
 char *get_postfix_expr(char *expr, int expr_size, List *tokens) {
     int ind = 0;
     char *res = (char*)malloc(expr_size);
+    res[0] = '\0';
 
     Stack opers;
     stack_create(&opers);
@@ -46,8 +47,7 @@ char *get_postfix_expr(char *expr, int expr_size, List *tokens) {
         if (num_ind != 0) {
             num[num_ind] = '\0';
             list_push_end(tokens, strdup(num));
-            strcat(res, num);
-            ind += num_ind;
+            for (int j = 0; j < num_ind; j++) res[ind++] = num[j];
             num[0] = '\0';
             num_ind = 0;
         };
@@ -72,11 +72,11 @@ char *get_postfix_expr(char *expr, int expr_size, List *tokens) {
             stack_push(&opers, ch);
         };
     };
+
     if (num_ind != 0) {
         num[num_ind] = '\0';
         list_push_end(tokens, strdup(num));
-        strcat(res, num);
-        ind += num_ind;
+        for (int j = 0; j < num_ind; j++) res[ind++] = num[j];
         num[0] = '\0';
         num_ind = 0;
     };
@@ -87,6 +87,8 @@ char *get_postfix_expr(char *expr, int expr_size, List *tokens) {
         res[ind++] = popped;
     };
     res[ind] = '\0';
+
+    printf("expression postfix: %s\n", res);
 
     return res;
 };
