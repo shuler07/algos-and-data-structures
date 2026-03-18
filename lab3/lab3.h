@@ -17,10 +17,12 @@ typedef struct List {
 } List;
 
 void list_create(List *lst);
+void list_clear(List *lst);
 void list_push_begin(List *lst, char *token);
 void list_push_end(List *lst, char *token);
 char *list_pop_begin(List *lst);
 char *list_pop_end(List *lst);
+void list_print(List *lst);
 
 // stack.c
 typedef struct StackNode {
@@ -55,7 +57,7 @@ void tree_print(TreeNode *node, int space);
 void tree_remove_unary_minuses(Tree *tr, TreeNode *node);
 
 // deykstra.c
-char *get_postfix_expr(char *expr, int expr_size);
+char *get_postfix_expr(char *expr, int expr_size, List *tokens);
 
 // convert.c
 void postfix_expr_to_tree(char *expr, Tree *tr);
