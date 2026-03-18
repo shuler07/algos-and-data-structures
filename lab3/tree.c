@@ -38,11 +38,11 @@ bool tree_add_rec(TreeNode *node, char *val) {
         return true;
     };
 
-    // Унарный минус / плюс может иметь только одного потомка - правого
-    if (node->val[0] == '~' || node->val[0] == '$') return false;
-
     // Потомки правого потомка
     if (tree_add_rec(node->right, val)) return true;
+
+    // Унарный минус / плюс может иметь только одного потомка - правого
+    if (node->val[0] == '~' || node->val[0] == '$') return false;
 
     // Левый потомок
     if (!node->left) {
