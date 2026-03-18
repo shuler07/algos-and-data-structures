@@ -27,7 +27,6 @@ void list_print(List *lst);
 // stack.c
 typedef struct StackNode {
     char oper;
-    int priority;
     struct StackNode *prev;
 } StackNode;
 

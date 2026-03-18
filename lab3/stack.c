@@ -15,13 +15,6 @@ void stack_push(Stack *st, char oper) {
     };
 
     node->oper = oper;
-    int priority = 0;
-    if (oper == ')') priority = 1;
-    else if (oper == '+' || oper == '-') priority = 2;
-    else if (oper == '*' || oper == '/') priority = 3;
-    else if (oper == '~') priority = 4;
-    node->priority = priority;
-
     if (!st->top) {
         node->prev = NULL;
         st->top = node;

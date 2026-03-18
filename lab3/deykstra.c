@@ -6,10 +6,10 @@
 
 
 bool is_oper(char ch) {
-    return (strchr("()+-*/", ch) != NULL);
+    return (strchr("()+-*/^", ch) != NULL);
 };
 
-int priority(char oper) {
+int oper_priority(char oper) {
     switch (oper) {
         case '(': return 0;
         case ')': return 1;
@@ -17,7 +17,8 @@ int priority(char oper) {
         case '-': return 2;
         case '*':
         case '/': return 3;
-        case '~': return 4;
+        case '^': return 4;
+        case '~': return 5;
     };
     return -1;
 };
@@ -63,7 +64,7 @@ char *get_postfix_expr(char *expr, int expr_size, List *tokens) {
                 res[ind++] = ch;
             };
         } else {
-            while (opers.top && opers.top->priority >= priority(ch)) {
+            while (opers.top && oper_priority(opers.top->oper) >= oper_priority(ch)) {
                 char popped = stack_pop(&opers);
                 char str[2] = { popped, '\0' };
                 list_push_end(tokens, strdup(str));
@@ -87,8 +88,6 @@ char *get_postfix_expr(char *expr, int expr_size, List *tokens) {
         res[ind++] = popped;
     };
     res[ind] = '\0';
-
-    printf("expression postfix: %s\n", res);
 
     return res;
 };
