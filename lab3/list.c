@@ -87,7 +87,8 @@ void list_print(List *lst) {
     ListNode *current = lst->first;
     while (current) {
         if (current->next) printf("%s, ", current->token);
-        else printf("%s]\n", current->token);
+        else printf("%s", current->token);
         current = current->next;
     };
+    printf("]\n");
 };

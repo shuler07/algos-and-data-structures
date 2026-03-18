@@ -4,8 +4,8 @@
 
 
 void show_system_message(bool is_expr_entered) {
-    if (is_expr_entered) printf("[ Expression entered ]\n");
-    else printf("[ Expression not entered ]\n");
+    if (is_expr_entered) printf("\n[ Expression entered ]\n");
+    else printf("\n[ Expression not entered ]\n");
     printf("[ 1 ] Enter expression\n");
     printf("[ 2 ] Print expression\n");
     printf("[ 3 ] Print postfix expression\n");
