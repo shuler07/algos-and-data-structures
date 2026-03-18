@@ -22,7 +22,7 @@ int priority(char oper) {
     return -1;
 };
 
-char *get_postfix_expr(char *expr, int expr_size) {
+char *get_postfix_expr(char *expr, int expr_size, List *tokens) {
     int ind = 0;
     char *res = (char*)malloc(expr_size);
 
@@ -36,35 +36,56 @@ char *get_postfix_expr(char *expr, int expr_size) {
     while (expr[++i] != '\0') {
         char ch = expr[i];
         if (!is_oper(ch)) {
-            if (num_ind != 0 && '0' <= ch && ch <= '9'); // raise error
+            if (num_ind != 0 && '0' <= ch <= '9'); // raise error
             if ('0' <= ch <= '9') {
                 num[num_ind++] = ch;
                 continue;
             };
-            res[ind++] = ch;
-            continue;
+        };
+
+        if (num_ind != 0) {
+            num[num_ind] = '\0';
+            list_push_end(tokens, strdup(num));
+            strcat(res, num);
+            ind += num_ind;
+            num[0] = '\0';
+            num_ind = 0;
         };
 
         // Унарный минус
         if (ch == '-' && (i == 0 || expr[i-1] == '(' || is_oper(expr[i-1]))) ch = '~';
 
         if (ch == '(') stack_push(&opers, ch);
-        else if (ch == ')') while ((ch = stack_pop(&opers)) != '(') res[ind++] = ch;
-        else {
-            if (num_ind != 0) {
-                res[ind++] = '(';
-                num[num_ind] = '\0';
-                strcat(res, num);
-                ind += num_ind;
-                res[ind++] = ')';
-                num[0] = '\0';
-                num_ind = 0;
+        else if (ch == ')') {
+            while ((ch = stack_pop(&opers)) != '(') {
+                char str[2] = { ch, '\0' };
+                list_push_end(tokens, strdup(str));
+                res[ind++] = ch;
             };
-            while (opers.top && opers.top->priority >= priority(ch)) res[ind++] = stack_pop(&opers);
+        } else {
+            while (opers.top && opers.top->priority >= priority(ch)) {
+                char popped = stack_pop(&opers);
+                char str[2] = { popped, '\0' };
+                list_push_end(tokens, strdup(str));
+                res[ind++] = popped;
+            };
             stack_push(&opers, ch);
         };
     };
-    while (opers.top) res[ind++] = stack_pop(&opers);
+    if (num_ind != 0) {
+        num[num_ind] = '\0';
+        list_push_end(tokens, strdup(num));
+        strcat(res, num);
+        ind += num_ind;
+        num[0] = '\0';
+        num_ind = 0;
+    };
+    while (opers.top) {
+        char popped = stack_pop(&opers);
+        char str[2] = { popped, '\0' };
+        list_push_end(tokens, strdup(str));
+        res[ind++] = popped;
+    };
     res[ind] = '\0';
 
     return res;
