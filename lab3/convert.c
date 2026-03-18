@@ -4,9 +4,12 @@
 #include "lab3.h"
 
 
-void postfix_expr_to_tree(char *expr, Tree *tr) {
-    int ind = strchr(expr, '\0') - expr;
-    for (int i = ind - 1; i >= 0; i--) tree_add(tr, expr[i]);
+void postfix_expr_to_tree(List *tokens, Tree *tr) {
+    ListNode *cur = tokens->last;
+    while (cur) {
+        tree_add(tr, cur->token);
+        cur = cur->prev;
+    };
 };
 
 char *tree_to_expr(TreeNode *node, int expr_size) {
@@ -15,7 +18,7 @@ char *tree_to_expr(TreeNode *node, int expr_size) {
     if (node->left) strcat(res, tree_to_expr(node->left, expr_size));
 
     // Если унарный минус - есть только левое поддерево
-    if (node->val == '~') {
+    if (node->val[0] == '~') {
         res[0] = '-';
         res[1] = '(';
         strcat(res, tree_to_expr(node->right, expr_size));
@@ -23,7 +26,7 @@ char *tree_to_expr(TreeNode *node, int expr_size) {
         return res;
     };
     
-    res[strlen(res)] = node->val;
+    strcat(res, node->val);
     if (node->right) strcat(res, tree_to_expr(node->right, expr_size));
 
     return res;

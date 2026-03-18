@@ -42,7 +42,7 @@ int main() {
                 else {
                     is_expr_entered = true;
                     postfix_expr = get_postfix_expr(expr, expr_size, &expr_tokens);
-                    postfix_expr_to_tree(postfix_expr, &expr_tree);
+                    postfix_expr_to_tree(&expr_tokens, &expr_tree);
                 };
                 break;
             case 2:

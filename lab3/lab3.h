@@ -41,7 +41,7 @@ char stack_pop(Stack *st);
 
 // tree.c
 typedef struct TreeNode {
-    char val;
+    char *val;
     struct TreeNode *parent;
     struct TreeNode *left;
     struct TreeNode *right;
@@ -52,7 +52,7 @@ typedef struct Tree {
 } Tree;
 
 void tree_create(Tree *tr);
-void tree_add(Tree *tr, char val);
+void tree_add(Tree *tr, char *val);
 void tree_print(TreeNode *node, int space);
 void tree_remove_unary_minuses(Tree *tr, TreeNode *node);
 
@@ -60,7 +60,7 @@ void tree_remove_unary_minuses(Tree *tr, TreeNode *node);
 char *get_postfix_expr(char *expr, int expr_size, List *tokens);
 
 // convert.c
-void postfix_expr_to_tree(char *expr, Tree *tr);
+void postfix_expr_to_tree(List *tokens, Tree *tr);
 char *tree_to_expr(TreeNode *node, int expr_size);
 
 #endif
