@@ -40,6 +40,10 @@ int main() {
                 expr = get_expr_string(&expr_size);
                 if (expr[0] == '\0') printf("<< Empty expression! >>\n");
                 else {
+                    if (is_expr_entered) {
+                        list_clear(&expr_tokens);
+                        tree_clear(&expr_tree);
+                    };
                     is_expr_entered = true;
                     postfix_expr = get_postfix_expr(expr, expr_size, &expr_tokens);
                     postfix_expr_to_tree(&expr_tokens, &expr_tree);

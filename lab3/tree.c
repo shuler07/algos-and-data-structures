@@ -8,6 +8,17 @@ void tree_create(Tree *tr) {
     tr->root = NULL;
 };
 
+void tree_clear_rec(TreeNode *node) {
+    if (node->left) tree_clear_rec(node->left);
+    if (node->right) tree_clear_rec(node->right);
+    free(node);
+};
+
+void tree_clear(Tree *tr) {
+    tree_clear_rec(tr->root);
+    tree_create(tr);
+};
+
 bool tree_add_rec(TreeNode *node, char *val) {
     if ('0' <= node->val[0] && node->val[0] <= '9') return false;
     if ('a' <= node->val[0] && node->val[0] <= 'z') return false;
