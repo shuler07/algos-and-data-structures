@@ -55,9 +55,9 @@ char *get_postfix_expr(char *expr, int expr_size, List *tokens) {
         };
 
         // Унарный минус
-        if (ch == '-' && (i == 0 || expr[i-1] == '(' || is_oper(expr[i-1]))) ch = '~';
+        if (ch == '-' && (i == 0 || expr[i-1] == '(' || (is_oper(expr[i-1]) && expr[i-1] != ')'))) ch = '~';
         // Унарный плюс
-        if (ch == '+' && (i == 0 || expr[i-1] == '(' || is_oper(expr[i-1]))) ch = '$';
+        if (ch == '+' && (i == 0 || expr[i-1] == '(' || (is_oper(expr[i-1]) && expr[i-1] != ')'))) ch = '$';
 
         if (ch == '(') stack_push(&opers, ch);
         else if (ch == ')') {
