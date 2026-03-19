@@ -13,21 +13,41 @@ void postfix_expr_to_tree(List *tokens, Tree *tr) {
 };
 
 char *tree_to_expr(TreeNode *node, int expr_size) {
-    char *res = (char*)calloc(expr_size, 1);
+    char *res = (char*)malloc(expr_size);
+    res[0] = '\0';
 
-    if (node->left) strcat(res, tree_to_expr(node->left, expr_size));
-
-    // Если унарный минус - есть только левое поддерево
-    if (node->val[0] == '~') {
-        res[0] = '-';
-        res[1] = '(';
-        strcat(res, tree_to_expr(node->right, expr_size));
-        res[strlen(res)] = ')';
-        return res;
-    };
+    int priority = oper_priority(node->val[0]);
     
-    strcat(res, node->val);
-    if (node->right) strcat(res, tree_to_expr(node->right, expr_size));
+    // Вершина дерева - число
+    if (priority == -1) return strcat(res, node->val);
+
+    // Левое выражение
+    if (node->left) {
+        int lpriority = oper_priority(node->left->val[0]);
+        if (lpriority == -1) strcat(res, node->left->val);
+        else {
+            if (lpriority < priority) strcat(res, "(");
+            strcat(res, tree_to_expr(node->left, expr_size));
+            if (lpriority < priority) strcat(res, ")");
+        };
+    };
+
+    // Обработка знака
+    if (priority == 5) {
+        if (node->val[0] == '~') strcat(res, "-");
+        else strcat(res, "+");
+    } else strcat(res, node->val);
+    
+    // Правое выражение
+    if (node->right) {
+        int rpriority = oper_priority(node->right->val[0]);
+        if (rpriority == -1) strcat(res, node->right->val);
+        else {
+            if (rpriority < priority) strcat(res, "(");
+            strcat(res, tree_to_expr(node->right, expr_size));
+            if (rpriority < priority) strcat(res, ")");
+        };
+    };
 
     return res;
 };

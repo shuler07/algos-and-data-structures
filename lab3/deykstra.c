@@ -20,8 +20,8 @@ int oper_priority(char oper) {
         case '^': return 4;
         case '~':
         case '$': return 5;
+        default: return -1;
     };
-    return -1;
 };
 
 char *get_postfix_expr(char *expr, int expr_size, List *tokens) {
