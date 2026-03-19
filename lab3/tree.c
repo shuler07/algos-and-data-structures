@@ -87,26 +87,38 @@ void tree_print(TreeNode *node, int space) {
     if (node->right) tree_print(node->right, space + 2);
 };
 
-void tree_remove_unary_minuses(Tree *tr, TreeNode *node) {
-    if (node->val[0] == '~') {
-        if (tr->root == node) return;
-        TreeNode *child = node->right;
-        node->val = child->val;
-        node->right = NULL;
-        free(child);
-        if (tr->root->val[0] == '~') {
-            TreeNode *old_root = tr->root;
-            tr->root = tr->root->right;
-            tr->root->parent = NULL;
-            free(old_root);
-        } else {
-            TreeNode *new_root = (TreeNode*)malloc(sizeof(TreeNode));
-            new_root->val[0] = '~';
-            new_root->parent = new_root->left = NULL;
-            new_root->right = tr->root;
-            tr->root = new_root;
+void tree_remove_unary_minuses(TreeNode *node) {
+    if (node->val[0] == '*') {
+        TreeNode *lchild = node->left, *rchild = node->right;
+        if (lchild->val[0] == '~' && rchild->val[0] == '~') {
+            node->left = lchild->right;
+            node->right = rchild->right;
+            node->left->parent = node;
+            node->right->parent = node;
+            free(lchild);
+            free(rchild);
+        } else if (lchild->val[0] == '~') {
+            TreeNode *mul_node = (TreeNode*)malloc(sizeof(TreeNode));
+            mul_node->val = node->val;
+            mul_node->parent = node;
+            mul_node->left = lchild->right;
+            mul_node->right = rchild;
+            node->val = lchild->val;
+            node->left = NULL;
+            node->right = mul_node;
+            free(lchild);
+        } else if (rchild->val[0] == '~') {
+            TreeNode *mul_node = (TreeNode*)malloc(sizeof(TreeNode));
+            mul_node->val = node->val;
+            mul_node->parent = node;
+            mul_node->left = lchild;
+            mul_node->right = rchild->right;
+            node->val = rchild->val;
+            node->left = NULL;
+            node->right = mul_node;
+            free(rchild);
         };
     };
-    if (node->left) tree_remove_unary_minuses(tr, node->left);
-    if (node->right) tree_remove_unary_minuses(tr, node->right);
+    if (node->left) tree_remove_unary_minuses(node->left);
+    if (node->right) tree_remove_unary_minuses(node->right);
 };
