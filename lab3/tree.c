@@ -107,6 +107,7 @@ void tree_remove_unary_minuses(TreeNode *node) {
             node->left = NULL;
             node->right = mul_node;
             free(lchild);
+            if (node->parent) tree_remove_unary_minuses(node->parent);
         } else if (rchild->val[0] == '~') {
             TreeNode *mul_node = (TreeNode*)malloc(sizeof(TreeNode));
             mul_node->val = node->val;
@@ -117,6 +118,7 @@ void tree_remove_unary_minuses(TreeNode *node) {
             node->left = NULL;
             node->right = mul_node;
             free(rchild);
+            if (node->parent) tree_remove_unary_minuses(node->parent);
         };
     };
     if (node->left) tree_remove_unary_minuses(node->left);
