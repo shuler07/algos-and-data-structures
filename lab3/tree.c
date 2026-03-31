@@ -88,66 +88,33 @@ void tree_print(TreeNode *node, int space) {
 };
 
 void tree_remove_unary_minuses(TreeNode *node, Tree *tr) {
-    printf("checking %c\n", node->val[0]);
+    bool checkParent = false;
+    
     if (node->val[0] == '*') {
-        printf("* in node\n");
         TreeNode *lchild = node->left, *rchild = node->right;
         if (lchild->val[0] == '~' && rchild->val[0] == '~') {
             node->left = lchild->right;
             node->right = rchild->right;
             node->left->parent = node;
             node->right->parent = node;
-            free(lchild);
-            free(rchild);
 
-            printf("\n\n");
-            tree_print(tr->root, 0);
-            printf("\n\n");
-            printf("executing recursive for children\n");
-            if (node->left) tree_remove_unary_minuses(node->left, tr);
-            if (node->right) tree_remove_unary_minuses(node->right, tr);
+            // отвязываем обоих потомков ~, проверяем отца после перестановки
+            lchild->left = lchild->right = lchild->parent = NULL;
+            rchild->left = rchild->right = rchild->parent = NULL;
+            checkParent = true;
         } else if (lchild->val[0] == '~') {
-            printf("~ in left child\n");
             TreeNode *mul_node = (TreeNode*)malloc(sizeof(TreeNode));
             mul_node->val = node->val;
             mul_node->parent = node;
             mul_node->left = lchild->right;
             mul_node->right = rchild;
-            TreeNode *parent = node->parent;
-            if (parent) {
-                printf("has parent\n");
-                if (parent->val[0] == '~') {
-                    printf("~ in parent\n");
-                    if (parent->parent) {
-                        printf("parent has parent\n");
-                        if (parent->parent->left == parent) { parent->parent->left = mul_node; printf("parent->parent left now mul_node\n"); }
-                        else { parent->parent->right = mul_node; printf("parent->parent right now mul_node\n"); }
-                    } else {
-                        printf("parent has no parent\n");
-                        mul_node->parent = NULL;
-                        tr->root = mul_node;
-                        printf("root now mul_node\n");
-                    }
-                    printf("clearing parent, node...\n");
-                    free(parent);
-                    free(node);
-                    printf("parent, node cleared\n");
-                } else {
-                    printf("has no parent\n");
-                    node->val = lchild->val;
-                    node->left = NULL;
-                    node->right = mul_node;
-                    free(lchild);
-                    printf("executing recursive for parent\n");
-                    tree_remove_unary_minuses(parent, tr);
-                };
-            };
-            printf("\n\n");
-            tree_print(tr->root, 0);
-            printf("\n\n");
-            printf("executing recursive for children\n");
-            if (mul_node->left) tree_remove_unary_minuses(mul_node->left, tr);
-            if (mul_node->right) tree_remove_unary_minuses(mul_node->right, tr);
+            node->val = lchild->val;
+            node->left = NULL;
+            node->right = mul_node;
+            
+            // отвязываем левый потомок ~, проверяем отца после перестановки
+            lchild->left = lchild->right = lchild->parent = NULL;
+            checkParent = true;
         } else if (rchild->val[0] == '~') {
             TreeNode *mul_node = (TreeNode*)malloc(sizeof(TreeNode));
             mul_node->val = node->val;
@@ -157,15 +124,37 @@ void tree_remove_unary_minuses(TreeNode *node, Tree *tr) {
             node->val = rchild->val;
             node->left = NULL;
             node->right = mul_node;
-            free(rchild);
-            if (node->parent) tree_remove_unary_minuses(node->parent, tr);
+
+            // отвязываем правый потомок ~, проверяем отца после перестановки
+            rchild->left = rchild->right = rchild->parent = NULL;
+            checkParent = true;
         };
-    } else {
-        printf("\n\n");
-        tree_print(tr->root, 0);
-        printf("\n\n");
-        printf("executing recursive for children\n");
-        if (node->left) tree_remove_unary_minuses(node->left, tr);
-        if (node->right) tree_remove_unary_minuses(node->right, tr);
-    };
+    }
+
+    TreeNode *parent = node->parent;
+    if (node->val[0] == '~' && parent && parent->val[0] == '~') {  // если два минуса подряд - их оба нужно уничтожить
+        if (parent->parent) {
+            // если есть родитель верхнего ~, то переприсоединяем его к текущей ноде, в которой будет лежать правый потомок
+            // таким образом, в текущей ноде - правый потомок вместо ~, а родитель с ~ отвязан
+            node = node->right;
+            if (parent->parent->left == parent) parent->parent->left = node;
+            else parent->parent->right = node;
+            node->parent = parent->parent;
+            parent->parent = parent->left = parent->right = NULL;
+        } else {
+            // если родителя нет, то правый потомок должен стать корнем, текущей ноде вместо ~ присваиваем правого потомка, устанавливаем ее как корень
+            // и отвязываем родителя с ~
+            node = node->right;
+            node->parent = NULL;
+            parent->parent = parent->left = parent->right = NULL;
+            tr->root = node;
+        };
+    } else if (node->val[0] == '~' && parent && checkParent) tree_remove_unary_minuses(node->parent, tr); // если не было двух ~ подряд, то возможно нужно проверить
+    // родителя, если в текущей ноде ~ и выполнялась перестановка
+
+    if (node->left) tree_remove_unary_minuses(node->left, tr);
+    if (node->right) tree_remove_unary_minuses(node->right, tr);
+
+    // случай, когда нода отвязана - очищаем ее
+    if (!node->parent && !node->left && !node->right && tr->root != node) free(node);
 };

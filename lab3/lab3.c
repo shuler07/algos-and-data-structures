@@ -69,8 +69,6 @@ int main() {
                 if (!is_expr_entered) printf("<< Enter expression first! >>\n");
                 else {
                     tree_remove_unary_minuses(expr_tree.root, &expr_tree);
-                    printf("finished!\n");
-                    tree_print(expr_tree.root, 0);
                     expr = tree_to_expr(expr_tree.root, expr_size);
                     list_clear(&expr_tokens);
                     postfix_expr = get_postfix_expr(expr, expr_size, &expr_tokens);
