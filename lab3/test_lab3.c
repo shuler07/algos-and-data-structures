@@ -28,7 +28,7 @@ void test_expr_1() {
     assert(strcmp(tree_expr.root->left->left->val, "a") == 0);
     printf("[ + ] Tree expression\n");
 
-    tree_remove_unary_minuses(tree_expr.root);
+    tree_remove_unary_minuses(tree_expr.root, &tree_expr);
     assert(strcmp(tree_expr.root->val, "~") == 0);
     printf("[ + ] Tree procedure\n");
 
@@ -63,13 +63,13 @@ void test_expr_2() {
     assert(strcmp(tree_expr.root->left->left->right->val, "a") == 0);
     printf("[ + ] Tree expression\n");
 
-    tree_remove_unary_minuses(tree_expr.root);
+    tree_remove_unary_minuses(tree_expr.root, &tree_expr);
     assert(strcmp(tree_expr.root->val, "~") != 0);
     assert(strcmp(tree_expr.root->left->val, "~") == 0);
     printf("[ + ] Tree procedure\n");
 
     char *final_expr = tree_to_expr(tree_expr.root, 16);
-    assert(strcmp(final_expr, "-(a*b)+5") == 0);
+    assert(strcmp(final_expr, "(-(a*b))+5") == 0);
     printf("[ + ] Expression from tree\n");
 
     printf("Tests passed for expression 2\n");
@@ -97,7 +97,7 @@ void test_expr_3() {
     assert(strcmp(tree_expr.root->left->right->val, "a") == 0);
     printf("[ + ] Tree expression\n");
 
-    tree_remove_unary_minuses(tree_expr.root);
+    tree_remove_unary_minuses(tree_expr.root, &tree_expr);
     assert(strcmp(tree_expr.root->val, "~") == 0);
     printf("[ + ] Tree procedure\n");
 

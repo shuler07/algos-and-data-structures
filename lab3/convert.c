@@ -26,9 +26,17 @@ char *tree_to_expr(TreeNode *node, int expr_size) {
         int lpriority = oper_priority(node->left->val[0]);
         if (lpriority == -1) strcat(res, node->left->val);
         else {
-            if (lpriority < priority) strcat(res, "(");
+            // проверка для унарного минуса
+            int need_parentheses = 0;
+            if (node->left->val[0] == '~') {
+                need_parentheses = 1;
+            } else if (lpriority < priority) {
+                need_parentheses = 1;
+            }
+            
+            if (need_parentheses) strcat(res, "(");
             strcat(res, tree_to_expr(node->left, expr_size));
-            if (lpriority < priority) strcat(res, ")");
+            if (need_parentheses) strcat(res, ")");
         };
     };
 
@@ -43,9 +51,17 @@ char *tree_to_expr(TreeNode *node, int expr_size) {
         int rpriority = oper_priority(node->right->val[0]);
         if (rpriority == -1) strcat(res, node->right->val);
         else {
-            if (rpriority < priority) strcat(res, "(");
+            // проверка для унарного минуса
+            int need_parentheses = 0;
+            if (node->right->val[0] == '~') {
+                need_parentheses = 1;
+            } else if (rpriority < priority) {
+                need_parentheses = 1;
+            }
+            
+            if (need_parentheses) strcat(res, "(");
             strcat(res, tree_to_expr(node->right, expr_size));
-            if (rpriority < priority) strcat(res, ")");
+            if (need_parentheses) strcat(res, ")");
         };
     };
 
