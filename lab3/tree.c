@@ -87,8 +87,10 @@ void tree_print(TreeNode *node, int space) {
     if (node->right) tree_print(node->right, space + 2);
 };
 
-void tree_remove_unary_minuses(TreeNode *node) {
+void tree_remove_unary_minuses(TreeNode *node, Tree *tr) {
+    printf("checking %c\n", node->val[0]);
     if (node->val[0] == '*') {
+        printf("* in node\n");
         TreeNode *lchild = node->left, *rchild = node->right;
         if (lchild->val[0] == '~' && rchild->val[0] == '~') {
             node->left = lchild->right;
@@ -97,17 +99,55 @@ void tree_remove_unary_minuses(TreeNode *node) {
             node->right->parent = node;
             free(lchild);
             free(rchild);
+
+            printf("\n\n");
+            tree_print(tr->root, 0);
+            printf("\n\n");
+            printf("executing recursive for children\n");
+            if (node->left) tree_remove_unary_minuses(node->left, tr);
+            if (node->right) tree_remove_unary_minuses(node->right, tr);
         } else if (lchild->val[0] == '~') {
+            printf("~ in left child\n");
             TreeNode *mul_node = (TreeNode*)malloc(sizeof(TreeNode));
             mul_node->val = node->val;
             mul_node->parent = node;
             mul_node->left = lchild->right;
             mul_node->right = rchild;
-            node->val = lchild->val;
-            node->left = NULL;
-            node->right = mul_node;
-            free(lchild);
-            if (node->parent) tree_remove_unary_minuses(node->parent);
+            TreeNode *parent = node->parent;
+            if (parent) {
+                printf("has parent\n");
+                if (parent->val[0] == '~') {
+                    printf("~ in parent\n");
+                    if (parent->parent) {
+                        printf("parent has parent\n");
+                        if (parent->parent->left == parent) { parent->parent->left = mul_node; printf("parent->parent left now mul_node\n"); }
+                        else { parent->parent->right = mul_node; printf("parent->parent right now mul_node\n"); }
+                    } else {
+                        printf("parent has no parent\n");
+                        mul_node->parent = NULL;
+                        tr->root = mul_node;
+                        printf("root now mul_node\n");
+                    }
+                    printf("clearing parent, node...\n");
+                    free(parent);
+                    free(node);
+                    printf("parent, node cleared\n");
+                } else {
+                    printf("has no parent\n");
+                    node->val = lchild->val;
+                    node->left = NULL;
+                    node->right = mul_node;
+                    free(lchild);
+                    printf("executing recursive for parent\n");
+                    tree_remove_unary_minuses(parent, tr);
+                };
+            };
+            printf("\n\n");
+            tree_print(tr->root, 0);
+            printf("\n\n");
+            printf("executing recursive for children\n");
+            if (mul_node->left) tree_remove_unary_minuses(mul_node->left, tr);
+            if (mul_node->right) tree_remove_unary_minuses(mul_node->right, tr);
         } else if (rchild->val[0] == '~') {
             TreeNode *mul_node = (TreeNode*)malloc(sizeof(TreeNode));
             mul_node->val = node->val;
@@ -118,9 +158,14 @@ void tree_remove_unary_minuses(TreeNode *node) {
             node->left = NULL;
             node->right = mul_node;
             free(rchild);
-            if (node->parent) tree_remove_unary_minuses(node->parent);
+            if (node->parent) tree_remove_unary_minuses(node->parent, tr);
         };
+    } else {
+        printf("\n\n");
+        tree_print(tr->root, 0);
+        printf("\n\n");
+        printf("executing recursive for children\n");
+        if (node->left) tree_remove_unary_minuses(node->left, tr);
+        if (node->right) tree_remove_unary_minuses(node->right, tr);
     };
-    if (node->left) tree_remove_unary_minuses(node->left);
-    if (node->right) tree_remove_unary_minuses(node->right);
 };

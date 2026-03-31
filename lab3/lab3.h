@@ -54,7 +54,7 @@ void tree_create(Tree *tr);
 void tree_clear(Tree *tr);
 void tree_add(Tree *tr, char *val);
 void tree_print(TreeNode *node, int space);
-void tree_remove_unary_minuses(TreeNode *node);
+void tree_remove_unary_minuses(TreeNode *node, Tree *tr);
 
 // deykstra.c
 int oper_priority(char oper);
