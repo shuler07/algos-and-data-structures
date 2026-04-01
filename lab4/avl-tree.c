@@ -61,6 +61,7 @@ Node *removeMin(Node *p) {
 };
 
 
+
 void avlTreeCreate(AVLTree *tr) {
     tr->root = NULL;
 };
@@ -81,7 +82,6 @@ Node *avlTreeInsert(char key[7], double value, Node *root) {
     };
     
     int comp = strcmp(key, root->key);
-
     if (comp < 0) root->left = avlTreeInsert(key, value, root->left);
     else if (comp > 0) root->right = avlTreeInsert(key, value, root->right);
     else printf("<< Key %s already exists >>\n", key);
@@ -91,8 +91,8 @@ Node *avlTreeInsert(char key[7], double value, Node *root) {
 
 Node *avlTreeRemove(char key[7], Node *root) {
     if (!root) return root;
-    int comp = strcmp(key, root->key);
 
+    int comp = strcmp(key, root->key);
     if (comp < 0) root->left = avlTreeRemove(key, root->left);
     else if (comp > 0) root->right = avlTreeRemove(key, root->right);
     else {
@@ -106,6 +106,15 @@ Node *avlTreeRemove(char key[7], Node *root) {
     };
 
     return balance(root);
+};
+
+Node *avlTreeSearch(char key[7], Node *root) {
+    if (!root) return root;
+
+    int comp = strcmp(key, root->key);
+    if (comp < 0) return avlTreeSearch(key, root->left);
+    else if (comp > 0) return avlTreeSearch(key, root->right);
+    else return root;
 };
 
 void avlTreePrint(Node *root, int space) {

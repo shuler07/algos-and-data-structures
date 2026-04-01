@@ -17,6 +17,7 @@ typedef struct {
 void avlTreeCreate(AVLTree *tr);
 Node *avlTreeInsert(char key[7], double value, Node *root);
 Node *avlTreeRemove(char key[7], Node *root);
+Node *avlTreeSearch(char key[7], Node *root);
 void avlTreePrint(Node *root, int space);
 
 #endif
