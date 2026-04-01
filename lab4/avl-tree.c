@@ -49,6 +49,17 @@ Node *balance(Node *p) {
     return p;
 };
 
+Node *findMin(Node *p) {
+    if (p->left) return findMin(p->left);
+    return p;
+};
+
+Node *removeMin(Node *p) {
+    if (!p->left) return p->right;
+    p->left = removeMin(p->left);
+    return balance(p);
+};
+
 
 void avlTreeCreate(AVLTree *tr) {
     tr->root = NULL;
@@ -71,21 +82,34 @@ Node *avlTreeInsert(char key[7], double value, Node *root) {
     
     int comp = strcmp(key, root->key);
 
-    // вставка в левое поддерево
     if (comp < 0) root->left = avlTreeInsert(key, value, root->left);
-    // вставка в правое поддерево
     else if (comp > 0) root->right = avlTreeInsert(key, value, root->right);
-    // ключ совпадает с ключом в текущей ноде
     else printf("<< Key %s already exists >>\n", key);
 
     return balance(root);
 };
 
 Node *avlTreeRemove(char key[7], Node *root) {
+    if (!root) return root;
+    int comp = strcmp(key, root->key);
 
+    if (comp < 0) root->left = avlTreeRemove(key, root->left);
+    else if (comp > 0) root->right = avlTreeRemove(key, root->right);
+    else {
+        Node *l = root->left, *r = root->right;
+        free(root);
+        if (!r) return l;
+        Node *min = findMin(r);
+        min->right = removeMin(r);
+        min->left = l;
+        return balance(min);
+    };
+
+    return balance(root);
 };
 
 void avlTreePrint(Node *root, int space) {
+    if (!root) return;
     if (space == 0) printf(" => AVLTree:\n");
     for (int i = 0; i < space; i++) printf(" ");
     printf("%s: %.2lf\n", root->key, root->value);

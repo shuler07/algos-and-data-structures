@@ -21,8 +21,11 @@ bool prepareInsertNode(AVLTree *tr) {
     tr->root = avlTreeInsert(key, value, tr->root);
 };
 
-void prepareRemoveNode() {
-
+void prepareRemoveNode(AVLTree *tr) {
+    char key[7];
+    printf(" => Type key: ");
+    scanf("%s", key);
+    tr->root = avlTreeRemove(key, tr->root);
 };
 
 int main() {
@@ -40,7 +43,7 @@ int main() {
                 prepareInsertNode(&tree);
                 break;
             case 2:
-                prepareRemoveNode();
+                prepareRemoveNode(&tree);
                 break;
             case 3:
                 avlTreePrint(tree.root, 0);
