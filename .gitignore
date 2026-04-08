@@ -2,3 +2,4 @@
 *.o
 materials/
 lab2/test-table.txt
+.vscode
