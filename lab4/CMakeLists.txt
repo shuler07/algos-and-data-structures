@@ -13,3 +13,9 @@ target_link_libraries(run_tests GTest::gtest_main lab_logic)
 
 add_executable(run_bench bench-lab4.cpp)
 target_link_libraries(run_bench benchmark::benchmark lab_logic)
+
+add_executable(run_lab lab4.c)
+target_link_libraries(run_lab lab_logic)
+
+add_executable(run_lab_from_file lab4-from-file.c)
+target_link_libraries(run_lab_from_file lab_logic)
