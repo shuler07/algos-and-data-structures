@@ -16,3 +16,6 @@ add_library(lab_logic dsu.c list.c graph.c)
 
 add_executable(run_lab lab5.c)
 target_link_libraries(run_lab lab_logic)
+
+add_executable(run_lab_from_file lab5-from-file.c)
+target_link_libraries(run_lab_from_file lab_logic)
