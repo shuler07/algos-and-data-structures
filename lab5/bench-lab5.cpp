@@ -14,11 +14,9 @@ static void BM_Kruskal_Performance(benchmark::State& state) {
         Graph gr;
         graphCreate(&gr, n);
         
-        // Генерируем случайные ребра, чтобы граф был связным
         for (int i = 0; i < n - 1; ++i) {
             graphAddEdge(&gr, i, i + 1, rand() % 100 + 1);
         }
-        // Добавляем еще немного случайных ребер для плотности
         for (int i = 0; i < n; ++i) {
             int u = rand() % n;
             int v = rand() % n;
@@ -27,9 +25,6 @@ static void BM_Kruskal_Performance(benchmark::State& state) {
         state.ResumeTiming();
 
         Graph mst = graphKruskal(&gr);
-        
-        // В реальности здесь нужно освобождать память mst и gr
-        // но для чистоты замера времени опустим это или вынесем в Pause
     }
     state.SetComplexityN(state.range(0));
 }
