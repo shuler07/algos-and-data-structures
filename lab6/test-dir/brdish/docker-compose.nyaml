@@ -1,0 +1,20 @@
+services:
+  BUBUBU:
+    image: kek-lol:67
+    environment:
+      - HYPE=52
+      - LABA=IMBA
+  SHTOTO:
+    image: kakoy-to:latest
+    environment:
+      - NETU=true
+    networks:
+      - krutaya
+    volumes:
+      - bolshoy:/var/lib/importantdata
+networks:
+  krutaya:
+    internal: true
+    driver: bridge
+volumes:
+  bolshoy

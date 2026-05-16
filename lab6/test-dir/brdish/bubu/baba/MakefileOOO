@@ -1,0 +1,6 @@
+all:
+    gcc nonexistingfile.c -c
+    @echo "SLASHES: /, \, /, \"
+
+clean:
+    rm -rf *.lalalabububu

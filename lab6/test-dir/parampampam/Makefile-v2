@@ -1,0 +1,10 @@
+all: bam
+
+bam:
+    gcc krya.c -o krya.exe
+    gcc you.c -o you.exe
+    @echo "SUCCESS! ALL FILES IN lab6\test-dir\parampampam WERE COMPILED"
+
+clean:
+    rm -rf *.exe
+    @echo "CLEAN SUCCESSFUL"
